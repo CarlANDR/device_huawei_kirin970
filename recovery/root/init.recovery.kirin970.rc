@@ -1,0 +1,14 @@
+on fs
+    start fixlinks
+    wait /dev/block/bootdevice/by-name/system
+    wait /dev/block/bootdevice/by-name/vendor
+    mount ext4 /dev/block/bootdevice/by-name/system /system_root ro
+    mount ext4 /dev/block/bootdevice/by-name/vendor /vendor ro
+
+on post-fs-data
+    stop oeminfo_nvm
+
+service fixlinks /sbin/fixlinks.sh
+    oneshot
+    disabled
+    seclabel u:r:recovery:s0
